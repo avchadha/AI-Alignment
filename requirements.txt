@@ -1,0 +1,11 @@
+torch
+transformers>=4.51
+datasets
+accelerate
+pyyaml
+matplotlib
+pandas
+scipy
+math-verify
+pytest
+jlens @ git+https://github.com/anthropics/jacobian-lens.git
