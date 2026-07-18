@@ -1,0 +1,16 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 9280.05it/s]
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00, 2783.21it/s]
+[run] pilot arm=jspace band=light budget=4096: 14 items
+  batch 0: 577.5s (41.2s/item)
+[run] pilot arm=random band=light budget=0: 30 items
+  batch 0: 12.1s (0.8s/item)
+  batch 1: 37.1s (2.6s/item)
+[run] pilot arm=random band=light budget=4096: 30 items
+  batch 0: 625.0s (39.1s/item)
+  batch 1: 576.0s (41.1s/item)
+[run] pilot arm=jspace band=medium budget=0: 30 items
+  batch 0: 47.7s (3.0s/item)
+  batch 1: 46.1s (3.3s/item)
+[run] pilot arm=jspace band=medium budget=4096: 30 items
+  batch 0: 685.2s (42.8s/item)

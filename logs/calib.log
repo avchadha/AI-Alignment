@@ -1,0 +1,142 @@
++ .venv/bin/python -u scripts/run_pilot.py --stage calibrate --selection cosine
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 9070.44it/s]
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00, 3575.71it/s]
+[run] pilot arm=control band=medium budget=0: 30 items
+  batch 0: 0.8s (0.0s/item)
+  batch 1: 0.5s (0.0s/item)
+[run] pilot arm=control band=medium budget=1024: 30 items
+  batch 0: 31.8s (2.0s/item)
+  batch 1: 30.5s (2.2s/item)
+[run] pilot arm=jspace band=light budget=0: 30 items
+  batch 0: 5.3s (0.3s/item)
+  batch 1: 5.5s (0.4s/item)
+[run] pilot arm=jspace band=light budget=1024: 30 items
+  batch 0: 83.2s (5.2s/item)
+  batch 1: 79.6s (5.7s/item)
+[run] pilot arm=random band=light budget=0: 30 items
+  batch 0: 3.0s (0.2s/item)
+  batch 1: 3.1s (0.2s/item)
+[run] pilot arm=random band=light budget=1024: 30 items
+  batch 0: 83.3s (5.2s/item)
+  batch 1: 80.1s (5.7s/item)
+[run] pilot arm=jspace band=medium budget=0: 30 items
+  batch 0: 7.6s (0.5s/item)
+  batch 1: 7.8s (0.6s/item)
+[run] pilot arm=jspace band=medium budget=1024: 30 items
+  batch 0: 101.8s (6.4s/item)
+  batch 1: 96.0s (6.9s/item)
+[run] pilot arm=random band=medium budget=0: 30 items
+  batch 0: 7.5s (0.5s/item)
+  batch 1: 7.8s (0.6s/item)
+[run] pilot arm=random band=medium budget=1024: 30 items
+  batch 0: 101.7s (6.4s/item)
+  batch 1: 98.2s (7.0s/item)
+[run] pilot arm=jspace band=heavy budget=0: 30 items
+  batch 0: 8.9s (0.6s/item)
+  batch 1: 9.2s (0.7s/item)
+[run] pilot arm=jspace band=heavy budget=1024: 30 items
+  batch 0: 112.6s (7.0s/item)
+  batch 1: 106.6s (7.6s/item)
+[run] pilot arm=random band=heavy budget=0: 30 items
+  batch 0: 8.9s (0.6s/item)
+  batch 1: 9.2s (0.7s/item)
+[run] pilot arm=random band=heavy budget=1024: 30 items
+  batch 0: 113.8s (7.1s/item)
+  batch 1: 108.2s (7.7s/item)
+
+=== pilot summary (arm, band, budget: acc) ===
+  ('control', 'medium', 0): 5/30 = 16.67%
+  ('control', 'medium', 1024): 26/30 = 86.67%
+  ('jspace', 'heavy', 0): 3/30 = 10.00%
+  ('jspace', 'heavy', 1024): 24/30 = 80.00%
+  ('jspace', 'light', 0): 4/30 = 13.33%
+  ('jspace', 'light', 1024): 26/30 = 86.67%
+  ('jspace', 'medium', 0): 2/30 = 6.67%
+  ('jspace', 'medium', 1024): 27/30 = 90.00%
+  ('random', 'heavy', 0): 1/30 = 3.33%
+  ('random', 'heavy', 1024): 23/30 = 76.67%
+  ('random', 'light', 0): 2/30 = 6.67%
+  ('random', 'light', 1024): 24/30 = 80.00%
+  ('random', 'medium', 0): 1/30 = 3.33%
+  ('random', 'medium', 1024): 24/30 = 80.00%
++ .venv/bin/python -u scripts/run_pilot.py --stage calibrate --selection logit
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 9762.07it/s]
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00, 27413.75it/s]
+[run] pilot arm=control band=medium budget=0: 30 items
+  batch 0: 0.8s (0.0s/item)
+  batch 1: 0.5s (0.0s/item)
+[run] pilot arm=control band=medium budget=1024: 30 items
+  batch 0: 31.4s (2.0s/item)
+  batch 1: 30.6s (2.2s/item)
+[run] pilot arm=jspace band=light budget=0: 30 items
+  batch 0: 5.3s (0.3s/item)
+  batch 1: 5.5s (0.4s/item)
+[run] pilot arm=jspace band=light budget=1024: 30 items
+  batch 0: 84.3s (5.3s/item)
+  batch 1: 79.8s (5.7s/item)
+[run] pilot arm=random band=light budget=0: 30 items
+  batch 0: 3.0s (0.2s/item)
+  batch 1: 3.1s (0.2s/item)
+[run] pilot arm=random band=light budget=1024: 30 items
+  batch 0: 83.8s (5.2s/item)
+  batch 1: 81.5s (5.8s/item)
+[run] pilot arm=jspace band=medium budget=0: 30 items
+  batch 0: 7.6s (0.5s/item)
+  batch 1: 7.9s (0.6s/item)
+[run] pilot arm=jspace band=medium budget=1024: 30 items
+  batch 0: 102.3s (6.4s/item)
+  batch 1: 96.9s (6.9s/item)
+[run] pilot arm=random band=medium budget=0: 30 items
+  batch 0: 7.6s (0.5s/item)
+  batch 1: 7.9s (0.6s/item)
+[run] pilot arm=random band=medium budget=1024: 30 items
+  batch 0: 102.2s (6.4s/item)
+  batch 1: 97.4s (7.0s/item)
+[run] pilot arm=jspace band=heavy budget=0: 30 items
+  batch 0: 8.9s (0.6s/item)
+  batch 1: 9.2s (0.7s/item)
+[run] pilot arm=jspace band=heavy budget=1024: 30 items
+  batch 0: 112.4s (7.0s/item)
+  batch 1: 106.5s (7.6s/item)
+[run] pilot arm=random band=heavy budget=0: 30 items
+  batch 0: 8.9s (0.6s/item)
+  batch 1: 9.2s (0.7s/item)
+[run] pilot arm=random band=heavy budget=1024: 30 items
+  batch 0: 113.1s (7.1s/item)
+  batch 1: 107.3s (7.7s/item)
+
+=== pilot summary (arm, band, budget: acc) ===
+  ('control', 'medium', 0): 5/30 = 16.67%
+  ('control', 'medium', 1024): 26/30 = 86.67%
+  ('jspace', 'heavy', 0): 2/30 = 6.67%
+  ('jspace', 'heavy', 1024): 26/30 = 86.67%
+  ('jspace', 'light', 0): 5/30 = 16.67%
+  ('jspace', 'light', 1024): 26/30 = 86.67%
+  ('jspace', 'medium', 0): 2/30 = 6.67%
+  ('jspace', 'medium', 1024): 26/30 = 86.67%
+  ('random', 'heavy', 0): 2/30 = 6.67%
+  ('random', 'heavy', 1024): 25/30 = 83.33%
+  ('random', 'light', 0): 1/30 = 3.33%
+  ('random', 'light', 1024): 24/30 = 80.00%
+  ('random', 'medium', 0): 2/30 = 6.67%
+  ('random', 'medium', 1024): 26/30 = 86.67%
++ .venv/bin/python -u scripts/run_pilot.py --stage sst2 --selection cosine
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 8523.70it/s]
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00, 2661.36it/s]
+SST-2 [control/none/cosine]: 89/100 = 89.00%
+SST-2 [jspace/light/cosine]: 89/100 = 89.00%
+SST-2 [jspace/medium/cosine]: 90/100 = 90.00%
+SST-2 [jspace/heavy/cosine]: 90/100 = 90.00%
++ .venv/bin/python -u scripts/run_pilot.py --stage sst2 --selection logit
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 8614.62it/s]
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00, 2516.08it/s]
+SST-2 [control/none/logit]: 89/100 = 89.00%
+SST-2 [jspace/light/logit]: 90/100 = 90.00%
+SST-2 [jspace/medium/logit]: 89/100 = 89.00%
+SST-2 [jspace/heavy/logit]: 90/100 = 90.00%
++ echo CALIBRATION-ALL-DONE
+CALIBRATION-ALL-DONE
