@@ -40,44 +40,44 @@ def stage_sanity(model, tok, lens):
     print("model top-5:", [tok.decode([t]) for t in model_logits[0].topk(5).indices])
 
 
-def stage_calibrate(model, tok, lens):
+def stage_calibrate(model, tok, lens, selection="cosine"):
     """Pilot problems through control (once) + jspace/random per candidate band."""
     sel = select_problems()
     pilot = {"pilot": sel["pilot"]}
-    out = RESULTS / "pilot.jsonl"
+    out = RESULTS / f"pilot2_{selection}.jsonl"
     run_conditions(
         model, tok, lens,
-        problems_by_ds=pilot, arms=["control"], budgets=[0, 4096],
+        problems_by_ds=pilot, arms=["control"], budgets=[0, 1024],
         band="medium",  # label only; control has no hooks
-        out_path=out, batch_size=8,
+        out_path=out, batch_size=16, selection=selection,
     )
     for band in BANDS:
         run_conditions(
             model, tok, lens,
-            problems_by_ds=pilot, arms=["jspace", "random"], budgets=[0, 4096],
-            band=band, out_path=out, batch_size=8,
+            problems_by_ds=pilot, arms=["jspace", "random"], budgets=[0, 1024],
+            band=band, out_path=out, batch_size=16, selection=selection,
         )
     _summarize(out)
 
 
-def stage_sst2(model, tok, lens):
+def stage_sst2(model, tok, lens, selection="cosine"):
     """Automatic-capability check: sentiment classification should survive
     J-space ablation (selectivity control, per the paper)."""
     from datasets import load_dataset
 
     ds = load_dataset("stanfordnlp/sst2", split="validation").select(range(100))
-    out = RESULTS / "pilot_sst2.jsonl"
+    out = RESULTS / f"pilot2_sst2_{selection}.jsonl"
     done = set()
     if out.exists():
         done = {json.loads(l)["key"] for l in out.open()}
     with out.open("a") as f:
         for band in ["none", *BANDS]:
             arm = "control" if band == "none" else "jspace"
-            ablator = None if band == "none" else make_ablator(model, lens, arm, band)
+            ablator = None if band == "none" else make_ablator(model, lens, arm, band, selection=selection)
             correct = n = 0
             for i in range(0, len(ds), 10):
                 rows = [ds[j] for j in range(i, min(i + 10, len(ds)))]
-                keys = [f"sst2|{i+j}|{arm}|{band}" for j in range(len(rows))]
+                keys = [f"sst2|{i+j}|{arm}|{band}|{selection}" for j in range(len(rows))]
                 if all(k in done for k in keys):
                     continue
                 prompts = [
@@ -104,7 +104,7 @@ def stage_sst2(model, tok, lens):
                     f.write(json.dumps({"key": key, "band": band, "arm": arm,
                                         "correct": bool(ok), "pred": pred[:40]}) + "\n")
             if n:
-                print(f"SST-2 [{arm}/{band}]: {correct}/{n} = {correct/n:.2%}")
+                print(f"SST-2 [{arm}/{band}/{selection}]: {correct}/{n} = {correct/n:.2%}")
 
 
 def _summarize(path: Path):
@@ -126,12 +126,13 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", default="all", choices=["sanity", "calibrate", "sst2", "all"])
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    ap.add_argument("--selection", default="cosine", choices=["cosine", "logit"])
     args = ap.parse_args()
 
     model, tok, lens = load_model_and_lens(MODEL_ID, LENS_REPO, LENS_FILE, args.device)
     if args.stage in ("sanity", "all"):
         stage_sanity(model, tok, lens)
     if args.stage in ("calibrate", "all"):
-        stage_calibrate(model, tok, lens)
+        stage_calibrate(model, tok, lens, selection=args.selection)
     if args.stage in ("sst2", "all"):
-        stage_sst2(model, tok, lens)
+        stage_sst2(model, tok, lens, selection=args.selection)

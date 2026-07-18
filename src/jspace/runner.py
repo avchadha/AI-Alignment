@@ -37,14 +37,16 @@ def load_model_and_lens(model_id: str, lens_repo: str, lens_file: str, device: s
     return model, tok, lens
 
 
-def make_ablator(model, lens, arm: str, band: str, k: int = 10, seed: int = 0):
+def make_ablator(
+    model, lens, arm: str, band: str, k: int = 10, seed: int = 0, selection: str = "cosine"
+):
     if arm == "control":
         return None
     layers = [l for l in BANDS[band] if l in lens.jacobians]
     if len(layers) < len(BANDS[band]):
         missing = sorted(set(BANDS[band]) - set(layers))
         print(f"[warn] lens missing jacobians for layers {missing}; using {layers}")
-    cfg = AblationConfig(band_layers=layers, arm=arm, k=k, seed=seed)
+    cfg = AblationConfig(band_layers=layers, arm=arm, k=k, seed=seed, selection=selection)
     return JSpaceAblator(model, lens.jacobians, cfg)
 
 
@@ -77,14 +79,17 @@ def run_conditions(
     out_path: Path,
     batch_size: int = 8,
     n_samples: dict[str, int] | None = None,
-    answer_max_tokens: int = 512,
+    answer_max_tokens: int = 48,
     k: int = 10,
     base_seed: int = 0,
+    selection: str = "cosine",
 ):
     n_samples = n_samples or {}
     done = _existing_keys(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    ablators = {arm: make_ablator(model, lens, arm, band, k=k) for arm in arms}
+    ablators = {
+        arm: make_ablator(model, lens, arm, band, k=k, selection=selection) for arm in arms
+    }
 
     with out_path.open("a") as out:
         for ds, problems in problems_by_ds.items():
@@ -130,6 +135,7 @@ def run_conditions(
                                 "level": p.level,
                                 "arm": arm,
                                 "band": band,
+                                "selection": selection,
                                 "budget": budget,
                                 "sample_idx": s,
                                 "correct": j.correct,

@@ -9,9 +9,16 @@ Decoding runs a custom loop with (optionally) two KV caches per batch:
   * an *ablated* cache — hooks active — which actually samples the output.
 
 Budget forcing (thinking arms): rows that hit the thinking-token budget before
-emitting </think> get "\n</think>\n\n" teacher-forced, then answer normally.
-The direct arm (budget 0) uses enable_thinking=False chat templates and no
-thinking machinery.
+emitting </think> get "\n</think>\n\n" teacher-forced, then answer. The direct
+arm (budget 0) uses enable_thinking=False chat templates and no thinking
+machinery.
+
+Answer forcing (all arms): on entering the answer phase, the constrained
+prefix "The final answer is \\boxed{" is teacher-forced and only a short
+completion is allowed. Without this, "direct answer" instructions leak chain
+of thought into the answer text (the model writes step-by-step reasoning
+despite being told not to), which would silently un-do the externalization
+manipulation.
 """
 
 from __future__ import annotations
@@ -85,7 +92,8 @@ def generate_batch(
     *,
     ablator: JSpaceAblator | None = None,
     think_budget: int | None = None,  # None => direct arm (no think machinery)
-    answer_max_tokens: int = 512,
+    answer_max_tokens: int = 48,
+    answer_prefix: str = "The final answer is \\boxed{",
     params: SampleParams = SampleParams(),
 ) -> list[GenResult]:
     device = next(model.parameters()).device
@@ -99,12 +107,24 @@ def generate_batch(
     think_end_id = tokenizer.convert_tokens_to_ids("</think>")
     eos_id = tokenizer.convert_tokens_to_ids("<|im_end|>")
     force_close_ids = tokenizer.encode("\n</think>\n\n", add_special_tokens=False)
+    prefix_ids = (
+        tokenizer.encode(answer_prefix, add_special_tokens=False) if answer_prefix else []
+    )
+    nn_prefix_ids = (
+        tokenizer.encode("\n\n" + answer_prefix, add_special_tokens=False)
+        if answer_prefix
+        else []
+    )
 
     gen = torch.Generator(device=device).manual_seed(params.seed)
     states = [
         _RowState(phase="think" if think_budget is not None else "answer")
         for _ in range(B)
     ]
+    if prefix_ids:
+        for st in states:
+            if st.phase == "answer":  # direct arm: constrain from the first token
+                st.forced = list(prefix_ids)
 
     from transformers import DynamicCache
 
@@ -162,9 +182,10 @@ def generate_batch(
                 st.n_think += 1
                 if tok == think_end_id:
                     st.phase = "answer"
+                    st.forced = list(nn_prefix_ids)
                 elif st.n_think >= think_budget and not st.forced:
                     st.clipped = True
-                    st.forced = list(force_close_ids)
+                    st.forced = list(force_close_ids) + list(prefix_ids)
                     st.phase = "answer"  # forced tokens complete the transition
             else:
                 st.n_answer += 1

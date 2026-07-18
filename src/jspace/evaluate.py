@@ -36,7 +36,11 @@ def extract_boxed(text: str) -> str | None:
                 break
         out.append(c)
         i += 1
-    return "".join(out).strip() if depth == 0 else None
+    if depth == 0:
+        return "".join(out).strip()
+    # Unclosed box (generation cut off): salvage the content up to a newline.
+    salvaged = "".join(out).split("\n")[0].strip()
+    return salvaged or None
 
 
 _NUM_RE = re.compile(r"-?\d[\d,]*(?:\.\d+)?")

@@ -17,8 +17,9 @@ n_samples:
 arms: [control, jspace, random]
 budgets: [0, 256, 1024, 4096]   # thinking-token budgets; 0 = direct answer
 band: medium                     # PLACEHOLDER - frozen after pilot calibration
+selection: cosine                # PLACEHOLDER - 'cosine' or 'logit', frozen after pilot
 k: 10
-answer_max_tokens: 512
+answer_max_tokens: 48   # constrained answer: forced 'The final answer is \\boxed{' prefix
 batch_size: 16
 base_seed: 0
 out_path: results/main.jsonl

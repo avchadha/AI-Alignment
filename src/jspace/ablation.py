@@ -45,6 +45,7 @@ class AblationConfig:
     band_layers: list[int]  # decoder block indices whose outputs are ablated
     k: int = 10
     arm: str = "jspace"  # "jspace" | "random"
+    selection: str = "cosine"  # "cosine" | "logit" (how top-k activation is ranked)
     exclude_top_m: int = 10  # clean-pass top-m output tokens never ablated
     pos_chunk: int = 64  # positions scored per chunk (memory control)
     seed: int = 0
@@ -167,8 +168,11 @@ class JSpaceAblator:
             hs_l = hs.to(J.dtype)
             t = hs_l @ J.T  # transported residual: J_l @ h, [B, C, d]
             scores = (t @ self._u_eff.T).float()  # lens logits, [B, C, V]
-            scores /= self._vnorms[layer]  # / ||v_c||
-            scores /= hs.float().norm(dim=-1, keepdim=True).clamp_min(EPS)  # / ||h||
+            if self.cfg.selection == "cosine":
+                scores /= self._vnorms[layer]  # / ||v_c||
+                scores /= hs.float().norm(dim=-1, keepdim=True).clamp_min(EPS)  # / ||h||
+            elif self.cfg.selection != "logit":
+                raise ValueError(f"unknown selection {self.cfg.selection!r}")
             if excl is not None:
                 scores.scatter_(
                     -1,

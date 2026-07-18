@@ -48,4 +48,5 @@ if __name__ == "__main__":
         answer_max_tokens=cfg["answer_max_tokens"],
         k=cfg["k"],
         base_seed=cfg["base_seed"],
+        selection=cfg.get("selection", "cosine"),
     )

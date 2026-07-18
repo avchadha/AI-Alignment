@@ -104,3 +104,23 @@ def test_hooks_apply_in_forward(tiny_model, jacobians):
         clean2 = tiny_model(ids).logits  # hooks removed on exit
     assert not torch.allclose(clean, ablated)
     assert torch.allclose(clean, clean2)
+
+
+def test_logit_selection_differs_and_zeroes(tiny_model, jacobians):
+    torch.manual_seed(5)
+    h = torch.randn(1, 4, D)
+    abl_c = JSpaceAblator(
+        tiny_model, jacobians, AblationConfig(band_layers=[1], k=5, record_selection=True)
+    )
+    abl_l = JSpaceAblator(
+        tiny_model, jacobians,
+        AblationConfig(band_layers=[1], k=5, selection="logit", record_selection=True),
+    )
+    out_c = abl_c._ablate(1, h)
+    out_l = abl_l._ablate(1, h)
+    assert not torch.equal(abl_c.selected[1], abl_l.selected[1])
+    v = _vectors_from_ids(abl_l, 1, abl_l.selected[1])
+    dots = torch.einsum("btkd,btd->btk", v, out_l.float())
+    cos = dots / (v.norm(dim=-1) * out_l.float().norm(dim=-1, keepdim=True))
+    assert cos.abs().max() < 1e-3
+    assert not torch.allclose(out_c, out_l)

@@ -11,7 +11,7 @@ def test_extract_boxed_balanced():
     assert extract_boxed(r"\boxed{\frac{1}{2}}") == r"\frac{1}{2}"
     assert extract_boxed(r"\boxed{a} then \boxed{b}") == "b"  # last one
     assert extract_boxed("no box") is None
-    assert extract_boxed(r"\boxed{unclosed") is None
+    assert extract_boxed(r"\boxed{unclosed") == "unclosed"  # salvage
 
 
 def test_extract_last_number():

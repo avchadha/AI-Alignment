@@ -58,17 +58,18 @@ def test_budget_forcing_and_bookkeeping(tiny_model, tok):
         assert r.n_think_tokens <= 8
         assert r.n_answer_tokens <= 12
         assert "</think>" in tok.decode(r.token_ids)
+        assert "The final answer is \\boxed{" in r.answer_text
 
 
 def test_direct_arm_no_think(tiny_model, tok):
     prompts = [build_prompt(tok, "1+1?", direct=True)]
     res = generate_batch(
-        tiny_model, tok, prompts, think_budget=None, answer_max_tokens=10,
+        tiny_model, tok, prompts, think_budget=None, answer_max_tokens=20,
         params=SampleParams(seed=0),
     )
     assert res[0].n_think_tokens == 0
     assert not res[0].budget_clipped
-    assert res[0].n_answer_tokens <= 10
+    assert res[0].answer_text.startswith("The final answer is \\boxed{")
 
 
 def test_custom_loop_matches_hf_generate_greedy(tiny_model, tok):
@@ -78,6 +79,7 @@ def test_custom_loop_matches_hf_generate_greedy(tiny_model, tok):
     n_new = 12
     ours = generate_batch(
         tiny_model, tok, prompts, think_budget=None, answer_max_tokens=n_new,
+        answer_prefix="",
         params=SampleParams(temperature=1e-6, top_p=1.0, top_k=1, seed=0),
     )
     enc = tok(prompts, return_tensors="pt", padding=True, padding_side="left")

@@ -42,6 +42,28 @@ Operationalized predictions, in decreasing order of confidence:
   uninformative there — we state this in advance).
 - Prediction 4 fails visibly if ablated CoT lengths are equal or shorter.
 
+## Protocol amendments (recorded after pilot, BEFORE main runs)
+
+1. **Constrained answers everywhere.** The pilot exposed a leak: with
+   `enable_thinking=False` plus a "no intermediate steps" instruction, the
+   model still wrote step-by-step reasoning inside its answer text, so the
+   budget-0 arm was not a no-externalization condition. Fix: in every arm the
+   answer segment is teacher-forced to `The final answer is \boxed{` with a
+   48-token cap; externalized reasoning can therefore exist only in the
+   measured think segment. Pilot v1 data (`results/pilot_v1_leaky_direct.jsonl`)
+   is retained but not used.
+2. **Top-k selection rule ambiguity.** The paper says the k "most strongly
+   activated" J-lens vectors are ablated. Cosine-similarity ranking selects
+   junk low-norm tokens (code formatting artifacts) in this community lens;
+   raw lens-logit ranking matches the lens's own readout. We calibrate both on
+   the pilot set and freeze one. Choice criterion (stated in advance): the
+   selection/band configuration with a substantial J-ablation drop on
+   direct answers while SST-2 sentiment (automatic capability) stays intact.
+   The jspace-vs-random specificity comparison is NOT used as a selection
+   criterion — it remains an open test of the main experiment.
+3. **Calibration budgets.** Band calibration uses budgets {0, 1024} (not
+   {0, 4096}) for speed; the full budget axis appears only in the main run.
+
 ## Known risks stated in advance
 
 - The pre-fitted community lens (`neuronpedia/jacobian-lens`, wikitext, 479 prompts)
