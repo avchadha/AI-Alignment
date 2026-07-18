@@ -39,3 +39,23 @@ def test_judge_math500_equivalence():
 def test_judge_aime():
     assert judge("aime24", r"\boxed{204}", "204").correct
     assert not judge("aime24", r"\boxed{203}", "204").correct
+
+
+def test_arith_probe_and_judging():
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+    from jspace.data import make_arith_probe
+
+    probs = make_arith_probe(n_per_hops=5)
+    assert len(probs) == 15
+    # deterministic across calls
+    probs2 = make_arith_probe(n_per_hops=5)
+    assert [p.question for p in probs] == [p.question for p in probs2]
+    for p in probs:
+        expr = p.question[len("What is "):-1]
+        assert eval(expr.replace("*", "*")) == int(p.gold_answer)
+    assert judge("arith", r"The final answer is \boxed{" + probs[0].gold_answer + "}",
+                 probs[0].gold_answer).correct
+    assert not judge("arith", r"\boxed{999999}", probs[0].gold_answer).correct

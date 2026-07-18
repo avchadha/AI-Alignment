@@ -63,6 +63,15 @@ Operationalized predictions, in decreasing order of confidence:
    criterion — it remains an open test of the main experiment.
 3. **Calibration budgets.** Band calibration uses budgets {0, 1024} (not
    {0, 4096}) for speed; the full budget axis appears only in the main run.
+4. **Floor effect confirmed, arith probe added.** Calibration under the fixed
+   protocol shows un-ablated Qwen3-4B gets only ~17% on pilot GSM8K/MATH when
+   truly forced to answer directly (vs ~87% with 1024 thinking tokens): the
+   internal-reasoning baseline is near floor on the assignment datasets, as
+   anticipated as a risk for AIME. To give the internal side of the trade-off
+   measurable headroom, we add a synthetic 1/2/3-hop chained-arithmetic probe
+   (60 problems, seeded, `jspace.data.make_arith_probe`) where the direct
+   baseline should be off-floor, plus budget 512 (the steep dose-response
+   region is between 0 and 1024). Recorded before any main runs.
 
 ## Known risks stated in advance
 

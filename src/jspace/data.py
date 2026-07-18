@@ -58,6 +58,38 @@ def load_aime() -> list[Problem]:
     ]
 
 
+def make_arith_probe(n_per_hops: int = 20, seed: int = SEED) -> list[Problem]:
+    """Synthetic chained-arithmetic probe with controlled hop count.
+
+    GSM8K/MATH direct-answer accuracy sits near floor for Qwen3-4B, so they
+    cannot show a *differential* ablation effect on internal reasoning. These
+    1/2/3-hop problems keep the direct baseline off the floor and make hop
+    count an explicit within-probe difficulty axis.
+    """
+    rng = random.Random(seed + 7)
+    problems = []
+    for hops in (1, 2, 3):
+        for i in range(n_per_hops):
+            a, b = rng.randint(12, 89), rng.randint(12, 89)
+            expr, val = f"({a} + {b})", a + b
+            for _ in range(hops - 1):
+                op = rng.choice(["+", "-", "*"])
+                if op == "*":
+                    m = rng.randint(2, 9)
+                    expr, val = f"({expr} * {m})", val * m
+                elif op == "+":
+                    c = rng.randint(12, 199)
+                    expr, val = f"({expr} + {c})", val + c
+                else:
+                    c = rng.randint(12, 199)
+                    expr, val = f"({expr} - {c})", val - c
+            q = f"What is {expr[1:-1] if hops == 1 else expr}?"
+            problems.append(
+                Problem("arith", f"arith-h{hops}-{i}", q, str(val), level=hops)
+            )
+    return problems
+
+
 def select_problems(
     n_gsm8k: int = 150,
     n_math500: int = 150,
@@ -95,6 +127,7 @@ def select_problems(
 
     return {
         "pilot": pilot_gsm + pilot_math,
+        "arith": make_arith_probe(seed=seed),
         "gsm8k": main_gsm,
         "math500": main_math,
         "aime24": load_aime(),  # all 30, no subsampling

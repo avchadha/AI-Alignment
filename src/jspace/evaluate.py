@@ -65,12 +65,12 @@ def judge(dataset: str, response: str, gold: str) -> Judgement:
     math500 golds are LaTeX -> math_verify equivalence, numeric fallback.
     """
     extracted = extract_boxed(response)
-    if extracted is None and dataset in ("gsm8k", "aime24"):
+    if extracted is None and dataset in ("gsm8k", "aime24", "arith"):
         extracted = extract_last_number(response)
     if extracted is None:
         return Judgement(None, False, True)
 
-    if dataset in ("gsm8k", "aime24"):
+    if dataset in ("gsm8k", "aime24", "arith"):
         a, b = _norm_numeric(extracted), _norm_numeric(gold)
         return Judgement(extracted, a is not None and b is not None and abs(a - b) < 1e-6, False)
 
