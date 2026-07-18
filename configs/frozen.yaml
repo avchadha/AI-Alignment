@@ -1,0 +1,33 @@
+# FROZEN main-experiment configuration (committed before main runs).
+#
+# Calibration (results/pilot2_{cosine,logit}.jsonl, 30 held-out problems):
+#   - control direct (budget 0): 16.7%; control @1024: 86.7%  -> floor effect
+#   - jspace medium @0: 6.7% under BOTH selections (largest relative drop, 60%)
+#   - SST-2 sentiment: 89-90% under every band/selection (= 89% control)
+#     -> ablation is selective; automatic classification intact
+# Choice per pre-stated criterion (report/hypothesis.md): band with a
+# substantial direct-answer drop and SST-2 intact -> medium. Selections tied
+# on accuracy; logit chosen because it matches the lens's own readout ranking
+# and avoids cosine's junk low-norm-token selections. The jspace-vs-random
+# comparison was NOT used in this choice.
+
+model_id: Qwen/Qwen3-4B
+lens_repo: neuronpedia/jacobian-lens
+lens_file: qwen3-4b/jlens/Salesforce-wikitext/Qwen3-4B_jacobian_lens.pt
+
+datasets: [arith, gsm8k, math500, aime24]
+n_gsm8k: 150
+n_math500: 150            # stratified, 30 per level 1-5
+problem_seed: 20260716
+n_samples:
+  aime24: 3               # 30 problems x 3 samples
+
+arms: [control, jspace, random]
+budgets: [0, 256, 512, 1024, 4096]   # thinking-token budgets; 0 = direct
+band: medium                          # layers 14-29 of 36 (38-83% depth)
+selection: logit
+k: 10
+answer_max_tokens: 48   # constrained answer: forced 'The final answer is \boxed{'
+batch_size: 16
+base_seed: 0
+out_path: results/main.jsonl
