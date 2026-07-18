@@ -1,0 +1,121 @@
+=== accuracy ===
+dataset     arm  budget  n_problems  n_gen   acc  ci_lo  ci_hi  extraction_fail_rate  clip_rate  mean_think_tokens
+ aime24 control       0          30     90 0.000  0.000  0.000                 0.000      0.000              0.000
+ aime24  jspace       0          30     90 0.033  0.000  0.100                 0.000      0.000              0.000
+ aime24  random       0          30     90 0.000  0.000  0.000                 0.000      0.000              0.000
+ aime24 control     256          30     90 0.000  0.000  0.000                 0.000      1.000            256.000
+ aime24  jspace     256          30     90 0.000  0.000  0.000                 0.000      1.000            256.000
+ aime24  random     256          30     90 0.000  0.000  0.000                 0.000      1.000            256.000
+ aime24 control     512          30     90 0.000  0.000  0.000                 0.000      1.000            512.000
+ aime24  jspace     512          30     90 0.022  0.000  0.056                 0.000      1.000            512.000
+ aime24  random     512          30     90 0.000  0.000  0.000                 0.000      1.000            512.000
+ aime24 control    1024          30     90 0.033  0.000  0.100                 0.000      1.000           1024.000
+ aime24  jspace    1024          30     90 0.044  0.000  0.122                 0.000      1.000           1024.000
+ aime24  random    1024          30     90 0.033  0.000  0.100                 0.000      1.000           1024.000
+ aime24 control    4096          30     90 0.333  0.178  0.500                 0.000      0.944           4058.789
+ aime24  jspace    4096          30     90 0.367  0.222  0.522                 0.000      0.889           3971.267
+ aime24  random    4096          30     90 0.222  0.089  0.367                 0.000      0.944           4079.844
+  arith control       0          60     60 0.667  0.550  0.783                 0.000      0.000              0.000
+  arith  jspace       0          60     60 0.533  0.400  0.650                 0.000      0.000              0.000
+  arith  random       0          60     60 0.517  0.383  0.633                 0.000      0.000              0.000
+  arith control     256          60     60 0.733  0.617  0.833                 0.000      1.000            256.000
+  arith  jspace     256          60     60 0.733  0.617  0.850                 0.000      1.000            256.000
+  arith  random     256          60     60 0.650  0.533  0.767                 0.000      1.000            256.000
+  arith control     512          60     60 0.933  0.867  0.983                 0.000      1.000            512.000
+  arith  jspace     512          60     60 1.000  1.000  1.000                 0.000      0.950            510.467
+  arith  random     512          60     60 0.983  0.950  1.000                 0.000      0.983            510.933
+  arith control    1024          60     60 0.967  0.917  1.000                 0.000      0.417            876.633
+  arith  jspace    1024          60     60 1.000  1.000  1.000                 0.000      0.283            790.683
+  arith  random    1024          60     60 1.000  1.000  1.000                 0.000      0.500            885.017
+  arith control    4096          60     60 0.983  0.950  1.000                 0.000      0.000           1049.000
+  arith  jspace    4096          60     60 1.000  1.000  1.000                 0.000      0.000            853.467
+  arith  random    4096          60     60 1.000  1.000  1.000                 0.000      0.000           1149.067
+  gsm8k control       0         150    150 0.153  0.100  0.213                 0.000      0.000              0.000
+  gsm8k  jspace       0         150    150 0.140  0.087  0.200                 0.000      0.000              0.000
+  gsm8k  random       0         150    150 0.100  0.053  0.153                 0.000      0.000              0.000
+  gsm8k control     256         150    150 0.380  0.300  0.460                 0.000      0.993            255.980
+  gsm8k  jspace     256         150    150 0.447  0.367  0.527                 0.000      1.000            256.000
+  gsm8k  random     256         150    150 0.353  0.280  0.433                 0.000      1.000            256.000
+  gsm8k control     512         150    150 0.753  0.680  0.820                 0.000      0.993            510.427
+  gsm8k  jspace     512         150    150 0.920  0.873  0.960                 0.000      0.953            507.353
+  gsm8k  random     512         150    150 0.767  0.693  0.833                 0.000      0.980            509.673
+  gsm8k control    1024         150    150 0.920  0.873  0.960                 0.000      0.693            939.080
+  gsm8k  jspace    1024         150    150 0.947  0.907  0.980                 0.000      0.407            879.947
+  gsm8k  random    1024         150    150 0.920  0.873  0.960                 0.000      0.720            961.333
+  gsm8k control    4096         150    150 0.967  0.933  0.993                 0.000      0.093           1703.293
+  gsm8k  jspace    4096         150    150 0.960  0.927  0.987                 0.000      0.040           1201.707
+  gsm8k  random    4096         150    150 0.973  0.940  0.993                 0.000      0.053           1642.120
+math500 control       0         150    150 0.227  0.160  0.293                 0.000      0.000              0.000
+math500  jspace       0         150    150 0.220  0.153  0.287                 0.000      0.000              0.000
+math500  random       0         150    150 0.180  0.120  0.240                 0.000      0.000              0.000
+math500 control     256         150    150 0.293  0.220  0.367                 0.000      1.000            256.000
+math500  jspace     256         150    150 0.347  0.267  0.427                 0.000      1.000            256.000
+math500  random     256         150    150 0.273  0.200  0.347                 0.000      1.000            256.000
+math500 control     512         150    150 0.480  0.400  0.560                 0.000      1.000            512.000
+math500  jspace     512         150    150 0.573  0.493  0.653                 0.000      1.000            512.000
+math500  random     512         150    150 0.493  0.413  0.573                 0.000      1.000            512.000
+math500 control    1024         150    150 0.740  0.673  0.807                 0.000      0.933           1018.793
+math500  jspace    1024         150    150 0.767  0.700  0.833                 0.000      0.780            981.807
+math500  random    1024         150    150 0.700  0.627  0.773                 0.000      0.953           1018.020
+math500 control    4096         150    150 0.873  0.820  0.920                 0.000      0.280           2657.073
+math500  jspace    4096         150    150 0.847  0.787  0.900                 0.000      0.267           2325.693
+math500  random    4096         150    150 0.833  0.773  0.893                 0.000      0.333           2743.767
+
+=== retained accuracy under ablation (acc_arm / acc_control) ===
+dataset  budget    arm  retained  abs_drop
+ aime24    1024 jspace     1.333    -0.011
+ aime24    1024 random     1.000     0.000
+ aime24    4096 jspace     1.100    -0.033
+ aime24    4096 random     0.667     0.111
+  arith       0 jspace     0.800     0.133
+  arith       0 random     0.775     0.150
+  arith     256 jspace     1.000     0.000
+  arith     256 random     0.886     0.083
+  arith     512 jspace     1.071    -0.067
+  arith     512 random     1.054    -0.050
+  arith    1024 jspace     1.034    -0.033
+  arith    1024 random     1.034    -0.033
+  arith    4096 jspace     1.017    -0.017
+  arith    4096 random     1.017    -0.017
+  gsm8k       0 jspace     0.913     0.013
+  gsm8k       0 random     0.652     0.053
+  gsm8k     256 jspace     1.175    -0.067
+  gsm8k     256 random     0.930     0.027
+  gsm8k     512 jspace     1.221    -0.167
+  gsm8k     512 random     1.018    -0.013
+  gsm8k    1024 jspace     1.029    -0.027
+  gsm8k    1024 random     1.000     0.000
+  gsm8k    4096 jspace     0.993     0.007
+  gsm8k    4096 random     1.007    -0.007
+math500       0 jspace     0.971     0.007
+math500       0 random     0.794     0.047
+math500     256 jspace     1.182    -0.053
+math500     256 random     0.932     0.020
+math500     512 jspace     1.194    -0.093
+math500     512 random     1.028    -0.013
+math500    1024 jspace     1.036    -0.027
+math500    1024 random     0.946     0.040
+math500    4096 jspace     0.969     0.027
+math500    4096 random     0.954     0.040
+
+=== paired McNemar: control vs jspace ===
+  aime24 budget=0: ctrl-only-right=0 jspace-only-right=1 p=1.0000
+  aime24 budget=256: ctrl-only-right=0 jspace-only-right=0 p=1.0000
+  aime24 budget=512: ctrl-only-right=0 jspace-only-right=0 p=1.0000
+  aime24 budget=1024: ctrl-only-right=0 jspace-only-right=0 p=1.0000
+  aime24 budget=4096: ctrl-only-right=1 jspace-only-right=3 p=0.6250
+  arith budget=0: ctrl-only-right=8 jspace-only-right=0 p=0.0078
+  arith budget=256: ctrl-only-right=7 jspace-only-right=7 p=1.0000
+  arith budget=512: ctrl-only-right=0 jspace-only-right=4 p=0.1250
+  arith budget=1024: ctrl-only-right=0 jspace-only-right=2 p=0.5000
+  arith budget=4096: ctrl-only-right=0 jspace-only-right=1 p=1.0000
+  gsm8k budget=0: ctrl-only-right=9 jspace-only-right=7 p=0.8036
+  gsm8k budget=256: ctrl-only-right=12 jspace-only-right=22 p=0.1214
+  gsm8k budget=512: ctrl-only-right=2 jspace-only-right=27 p=0.0000
+  gsm8k budget=1024: ctrl-only-right=2 jspace-only-right=6 p=0.2891
+  gsm8k budget=4096: ctrl-only-right=1 jspace-only-right=0 p=1.0000
+  math500 budget=0: ctrl-only-right=13 jspace-only-right=12 p=1.0000
+  math500 budget=256: ctrl-only-right=11 jspace-only-right=19 p=0.2005
+  math500 budget=512: ctrl-only-right=4 jspace-only-right=18 p=0.0043
+  math500 budget=1024: ctrl-only-right=8 jspace-only-right=12 p=0.5034
+  math500 budget=4096: ctrl-only-right=9 jspace-only-right=5 p=0.4240
