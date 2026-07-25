@@ -9,7 +9,11 @@ Recorded before the main experiments (`report/hypothesis.md`, committed
 the multi-hop reasoning needed to solve mathematics problems; the impairment
 grows with problem difficulty; and explicit chain of thought (CoT)
 counteracts it, with the rescue increasing with the amount of reasoning
-externalized.** Operationalized predictions: (1) direct answers suffer more
+externalized.** Rationale: the paper reads the J-space and written CoT as
+partially interchangeable scratchpads; if the J-space is the load-bearing
+internal half, multi-hop work should fail without it unless externalized,
+and harder problems — needing more intermediate state per step — should lean
+on it more. Operationalized predictions: (1) direct answers suffer more
 from J-space ablation than CoT answers, and far more than from a matched-norm
 random ablation; (2) the control–ablated gap shrinks monotonically with the
 enforced thinking budget; (3) relative loss grows with difficulty (GSM8K →

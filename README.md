@@ -5,7 +5,9 @@ between the J-space workspace and written chain of thought (Anthropic,
 *Verbalizable Representations Form a Global Workspace in Language Models*,
 Transformer Circuits, July 2026) continue to hold as math problems get harder?
 
-**Report:** [`report/report.md`](report/report.md) ·
+**Submission report:** [`report/report_terse.pdf`](report/report_terse.pdf)
+(source: [`report/report_terse.md`](report/report_terse.md)) ·
+**Extended report:** [`report/report.md`](report/report.md) ·
 **Pre-registered hypothesis:** [`report/hypothesis.md`](report/hypothesis.md)
 (committed before any runs; see git history)
 
