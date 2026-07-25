@@ -1,0 +1,70 @@
+=== paired McNemar: jspace vs random ===
+  arith budget=0: jspace-only-right=3 random-only-right=2 p=1.0000
+  arith budget=256: jspace-only-right=10 random-only-right=5 p=0.3018
+  arith budget=512: jspace-only-right=1 random-only-right=0 p=1.0000
+  arith budget=1024: jspace-only-right=0 random-only-right=0 p=1.0000
+  arith budget=4096: jspace-only-right=0 random-only-right=0 p=1.0000
+  gsm8k budget=0: jspace-only-right=13 random-only-right=7 p=0.2632
+  gsm8k budget=256: jspace-only-right=24 random-only-right=10 p=0.0243
+  gsm8k budget=512: jspace-only-right=26 random-only-right=3 p=0.0000
+  gsm8k budget=1024: jspace-only-right=8 random-only-right=4 p=0.3877
+  gsm8k budget=4096: jspace-only-right=1 random-only-right=3 p=0.6250
+  math500 budget=0: jspace-only-right=15 random-only-right=9 p=0.3075
+  math500 budget=256: jspace-only-right=19 random-only-right=8 p=0.0522
+  math500 budget=512: jspace-only-right=17 random-only-right=5 p=0.0169
+  math500 budget=1024: jspace-only-right=17 random-only-right=7 p=0.0639
+  math500 budget=4096: jspace-only-right=11 random-only-right=9 p=0.8238
+  aime24 budget=0: jspace-only-right=3 random-only-right=0 p=0.2500
+  aime24 budget=256: jspace-only-right=0 random-only-right=0 p=1.0000
+  aime24 budget=512: jspace-only-right=2 random-only-right=0 p=0.5000
+  aime24 budget=1024: jspace-only-right=1 random-only-right=0 p=1.0000
+  aime24 budget=4096: jspace-only-right=15 random-only-right=2 p=0.0023
+
+=== MATH-500 accuracy by level ===
+  budget=0 L1: control=0.500 jspace=0.433 random=0.367
+  budget=0 L2: control=0.333 jspace=0.300 random=0.267
+  budget=0 L3: control=0.133 jspace=0.133 random=0.133
+  budget=0 L4: control=0.033 jspace=0.100 random=0.033
+  budget=0 L5: control=0.133 jspace=0.133 random=0.100
+  budget=256 L1: control=0.467 jspace=0.567 random=0.500
+  budget=256 L2: control=0.467 jspace=0.467 random=0.433
+  budget=256 L3: control=0.267 jspace=0.433 random=0.200
+  budget=256 L4: control=0.167 jspace=0.200 random=0.167
+  budget=256 L5: control=0.100 jspace=0.067 random=0.067
+  budget=512 L1: control=0.733 jspace=0.833 random=0.700
+  budget=512 L2: control=0.600 jspace=0.767 random=0.700
+  budget=512 L3: control=0.500 jspace=0.600 random=0.467
+  budget=512 L4: control=0.333 jspace=0.433 random=0.400
+  budget=512 L5: control=0.233 jspace=0.233 random=0.200
+  budget=1024 L1: control=0.900 jspace=0.867 random=0.800
+  budget=1024 L2: control=0.867 jspace=0.900 random=0.833
+  budget=1024 L3: control=0.767 jspace=0.867 random=0.800
+  budget=1024 L4: control=0.733 jspace=0.700 random=0.700
+  budget=1024 L5: control=0.433 jspace=0.500 random=0.367
+  budget=4096 L1: control=0.867 jspace=0.900 random=0.900
+  budget=4096 L2: control=1.000 jspace=1.000 random=0.933
+  budget=4096 L3: control=0.867 jspace=0.867 random=0.867
+  budget=4096 L4: control=0.967 jspace=0.833 random=0.833
+  budget=4096 L5: control=0.667 jspace=0.633 random=0.633
+
+=== arith probe accuracy by hops ===
+  budget=0 1-hop: control=1.000 jspace=1.000 random=1.000
+  budget=0 2-hop: control=0.750 jspace=0.550 random=0.500
+  budget=0 3-hop: control=0.250 jspace=0.050 random=0.050
+  budget=256 1-hop: control=1.000 jspace=0.950 random=1.000
+  budget=256 2-hop: control=0.850 jspace=0.750 random=0.900
+  budget=256 3-hop: control=0.350 jspace=0.500 random=0.050
+  budget=512 1-hop: control=1.000 jspace=1.000 random=1.000
+  budget=512 2-hop: control=1.000 jspace=1.000 random=1.000
+  budget=512 3-hop: control=0.800 jspace=1.000 random=0.950
+  budget=1024 1-hop: control=1.000 jspace=1.000 random=1.000
+  budget=1024 2-hop: control=1.000 jspace=1.000 random=1.000
+  budget=1024 3-hop: control=0.900 jspace=1.000 random=1.000
+  budget=4096 1-hop: control=1.000 jspace=1.000 random=1.000
+  budget=4096 2-hop: control=0.950 jspace=1.000 random=1.000
+  budget=4096 3-hop: control=1.000 jspace=1.000 random=1.000
+
+=== reflection probe (budget 4096, GSM8K subset) ===
+  control: n=20 mean_think=1582 | markers/1k tokens: alternatively=3.86 double-check=0.03 let-me-check=2.53 verify=0.25 wait=3.19 | total=9.86
+  jspace: n=20 mean_think=1186 | markers/1k tokens: alternatively=1.56 double-check=0.00 let-me-check=3.20 verify=0.04 wait=1.94 | total=6.74
+  paired think-length ratio jspace/control: median=0.76 (n=20)
