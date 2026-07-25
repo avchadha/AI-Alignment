@@ -78,7 +78,8 @@ MATH-500. Reproduction commands and settings: `README.md` and
 ## 4. Experimental results
 
 All 6,750 generations completed with no extraction failures. Full tables:
-`results/analysis_main.txt`; all five figures: `report/figs/`.
+`results/analysis_main.txt` and `results/extra_stats.txt`; all five figures:
+`report/figs/`.
 
 ![Figure 1: accuracy versus enforced thinking budget by arm, with 95%
 bootstrap confidence intervals.](figs/fig1_dose_response.png)
@@ -107,16 +108,21 @@ random p = 1.0). The damage is multi-hop-specific but not J-space-specific.
 in (a), this effect is specific to the J-space directions: the random arm
 tracks control (76.7% / 49.3% at 512), and paired J-space-versus-random
 tests give p < 10⁻⁴ (GSM8K, 512), p = 0.024 (GSM8K, 256), and p = 0.017
-(MATH-500, 512). Retained-accuracy curves: `report/figs/fig4_rescue.png`
-(AIME points below budget 1024 are undefined; control accuracy is zero).
+(MATH-500, 512).
+
+![Figure 4: retained accuracy (ablated/control) by thinking budget. The
+random arm hovers near 1.0 while the J-ablated arm exceeds it at
+intermediate budgets; AIME points below budget 1024 are undefined because
+control accuracy is zero there.](figs/fig4_rescue.png)
 
 **(c) The mechanism is shorter chain of thought (prediction 4 inverted).**
 At the effectively unconstrained 4,096 budget, J-ablated CoT is consistently
 shorter: 1,202 versus 1,703 mean thinking tokens on GSM8K (random: 1,642),
-853 versus 1,049 on the arithmetic probe, 2,326 versus 2,657 on MATH-500.
-The J-ablated arm is correspondingly clipped less wherever clipping is
-common (GSM8K at 1024: 41% versus 69%), and the gain in (b) is concentrated
-exactly where control chains are truncated mid-reasoning.
+853 versus 1,049 on the arithmetic probe, 2,326 versus 2,657 on MATH-500
+(length distributions: `report/figs/fig5_cot_length.png`). The J-ablated arm
+is correspondingly clipped less wherever clipping is common (GSM8K at 1024:
+41% versus 69%), and the gain in (b) is concentrated exactly where control
+chains are truncated mid-reasoning.
 
 **(d) Dose–response and convergence (prediction 2, weak form).** Every arm
 rises steeply with budget and the arms converge by budgets 1024–4096 (GSM8K
@@ -127,10 +133,10 @@ arms ≥96.7% by 1024) — but from damage that was never J-space-specific.
 **(e) No difficulty interaction in the predicted direction (prediction 3 not
 supported).** Within MATH-500 at budget 512 the J-ablation *advantage*
 appears at levels 1–4 (+.10, +.17, +.10, +.10) and vanishes at level 5 (.23
-both). AIME is floored below budget 4096 (0–4%) and shows no significant arm
-differences at 4096 (control 33.3%, J-ablated 36.7%, random 22.2%); 89–94%
-of AIME chains still clip at 4,096 tokens, so that condition largely
-measures truncation.
+both; per-level curves: `report/figs/fig3_difficulty.png`). AIME is floored
+below budget 4096 (0–4%) and shows no significant arm differences at 4096
+(control 33.3%, J-ablated 36.7%, random 22.2%); 89–94% of AIME chains still
+clip at 4,096 tokens, so that condition largely measures truncation.
 
 ## 5. Analysis of results
 
@@ -140,13 +146,14 @@ impairment appears only where the direct-answer baseline is off the floor,
 and is matched by an equally large random perturbation; prediction 3's
 difficulty interaction is absent; prediction 4 inverted. The one robustly
 J-space-specific effect is opposite in direction to the hypothesis: removing
-the top-k J-lens directions makes written CoT roughly 25% shorter at equal
-or better accuracy. A post-hoc transcript probe (`scripts/verify_reflection.py`;
-20 GSM8K problems regenerated with full think-text, which the main run did
-not store) shows the omitted content is disproportionately *reflective*:
-J-ablated chains carry fewer reflection markers per thinking token (6.7 vs
-9.9 per 1,000; "wait" 1.9 vs 3.2, "alternatively" 1.6 vs 3.9) — roughly half
-the double-checking and re-derivation loops per problem. This suggests the
+the top-k J-lens directions makes written CoT shorter (median paired length
+ratio 0.76) at equal or better accuracy. A post-hoc transcript probe
+(`scripts/verify_reflection.py`; 20 GSM8K problems regenerated with full
+think-text, which the main run did not store) shows the omitted content is
+disproportionately *reflective*: J-ablated chains carry fewer reflection
+markers per thinking token (6.7 vs 9.9 per 1,000; "wait" 1.9 vs 3.2,
+"alternatively" 1.6 vs 3.9, "verify" 0.04 vs 0.25) — roughly half the
+double-checking and re-derivation loops per problem. This suggests the
 ablated directions in this band carry self-monitoring or verbalization
 content rather than load-bearing intermediate state; on this model the
 J-space–CoT relationship resembles modulation of how much the model
