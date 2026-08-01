@@ -6,7 +6,8 @@ between the J-space workspace and written chain of thought (Anthropic,
 Transformer Circuits, July 2026) continue to hold as math problems get harder?
 
 **Report:** [`report/report.pdf`](report/report.pdf)
-(source: [`report/report.md`](report/report.md)) ·
+(source: [`report/report.tex`](report/report.tex), compile with
+`tectonic report.tex` or `latexmk -pdf report.tex`) ·
 **Pre-registered hypothesis:** [`report/hypothesis.md`](report/hypothesis.md)
 (committed before any runs; see git history)
 

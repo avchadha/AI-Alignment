@@ -4,3 +4,10 @@ __pycache__/
 *.pt
 .pytest_cache/
 results/*.tmp
+# LaTeX build intermediates (report/ only; logs/ holds run logs)
+report/*.aux
+report/*.log
+report/*.out
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
