@@ -5,9 +5,9 @@ between the J-space workspace and written chain of thought (Anthropic,
 *Verbalizable Representations Form a Global Workspace in Language Models*,
 Transformer Circuits, July 2026) continue to hold as math problems get harder?
 
-**Report:** [`report/report.pdf`](report/report.pdf)
-(source: [`report/report.tex`](report/report.tex), compile with
-`tectonic report.tex` or `latexmk -pdf report.tex`) ·
+**Report:** [`report.pdf`](report.pdf) (repo root; source
+[`report/report.tex`](report/report.tex), compile with
+`tectonic -o . report/report.tex` or `latexmk -pdf` inside `report/`) ·
 **Pre-registered hypothesis:** [`report/hypothesis.md`](report/hypothesis.md)
 (committed before any runs; see git history)
 
@@ -57,9 +57,27 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 # -> freeze band/selection into configs/frozen.yaml, commit, then:
 .venv/bin/python scripts/run_main.py --config configs/frozen.yaml
 .venv/bin/python scripts/analyze.py             # tables -> results/analysis_main.txt, CSVs
+.venv/bin/python scripts/extra_stats.py --out results/extra_stats.txt
 .venv/bin/python scripts/make_plots.py          # figures -> report/figs/
 .venv/bin/python scripts/verify_reflection.py   # post-hoc CoT-content probe (report §5)
+tectonic -o . report/report.tex                 # recompile the report PDF
 ```
+
+Every table and figure in the report regenerates from the committed
+results with no GPU (only `run_pilot.py`, `run_main.py`, and
+`verify_reflection.py` need one):
+
+- **Table 1** and the report's accuracy / retained-accuracy /
+  control-vs-jspace McNemar numbers: `scripts/analyze.py` →
+  `results/analysis_main.txt`, `results/summary.csv`.
+- **Section 4's jspace-vs-random McNemar tests, MATH-500 level and
+  arithmetic-hops breakdowns, and section 5's reflection-marker rates:**
+  `scripts/extra_stats.py` → `results/extra_stats.txt`.
+- **Figures 1–2 in the report (and repo figures 2, 3, 5):**
+  `scripts/make_plots.py` → `report/figs/`.
+
+Prompts are defined in `src/jspace/generate.py` (`build_prompt`, the forced
+answer prefix, and the budget-forcing `</think>` injection).
 
 Runs are resumable: results append to JSONL keyed by
 `(dataset, problem, arm, band, budget, sample)` and existing keys are skipped.
@@ -72,13 +90,35 @@ run), `results/analysis_main.txt` (accuracy/retained/McNemar tables),
 ## Layout
 
 ```
+report.pdf               # the report (root, per submission requirements)
 src/jspace/ablation.py   # J-space ablation hooks (the core intervention)
-src/jspace/generate.py   # two-cache batched decoding + budget forcing
+src/jspace/generate.py   # two-cache batched decoding + budget forcing + prompts
 src/jspace/data.py       # canonical problem selection (seeded, pilot held out)
 src/jspace/evaluate.py   # boxed-answer extraction + math-verify judging
 src/jspace/runner.py     # condition grid, checkpointed JSONL results
-scripts/                 # pilot, main, analysis, plots, reflection probe, bootstrap
+scripts/                 # pilot, main, analysis, stats, plots, reflection probe
 configs/frozen.yaml      # frozen main-run configuration (band, k, budgets, seeds)
-report/                  # hypothesis.md (pre-registered), report.md, figs/
+report/                  # hypothesis.md (pre-registered), report.tex, figs/
 results/                 # pilot + main JSONL, analysis tables, summary CSVs
+logs/                    # pilot / calibration / main run logs
+tests/                   # CPU unit tests for ablation, generation, judging
 ```
+
+## External links
+
+- Paper under investigation: [*Verbalizable Representations Form a Global
+  Workspace in Language Models*](https://transformer-circuits.pub/2026/workspace/)
+  (Anthropic, Transformer Circuits, July 2026;
+  [arXiv:2607.15495](https://arxiv.org/abs/2607.15495))
+- Lens weights (too large to commit; downloaded automatically by
+  `run_pilot.py`/`run_main.py` via `jlens.JacobianLens.from_pretrained`):
+  [`neuronpedia/jacobian-lens`](https://huggingface.co/neuronpedia/jacobian-lens),
+  file `qwen3-4b/jlens/Salesforce-wikitext/Qwen3-4B_jacobian_lens.pt`
+- Lens readout code / fitting recipe:
+  [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens)
+  (installed from `requirements.txt`)
+- Model: [Qwen/Qwen3-4B](https://huggingface.co/Qwen/Qwen3-4B)
+- Datasets: [openai/gsm8k](https://huggingface.co/datasets/openai/gsm8k) ·
+  [HuggingFaceH4/MATH-500](https://huggingface.co/datasets/HuggingFaceH4/MATH-500) ·
+  [HuggingFaceH4/aime_2024](https://huggingface.co/datasets/HuggingFaceH4/aime_2024)
+  (all fetched automatically by `datasets`)
