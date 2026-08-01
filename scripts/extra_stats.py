@@ -33,13 +33,22 @@ def load(path: Path) -> list[dict]:
 
 
 def mcnemar(rows: list[dict], ds: str, budget: int, a1: str, a2: str):
-    """Exact two-sided binomial McNemar on paired (uid, sample_idx) outcomes."""
-    per = collections.defaultdict(dict)
+    """Exact two-sided binomial McNemar on paired per-problem outcomes.
+
+    Samples are aggregated to a per-problem majority before pairing, matching
+    analyze.py. Pairing at the (uid, sample_idx) level instead would treat
+    AIME's 3 samples per problem as independent pairs, which they are not.
+    """
+    per = collections.defaultdict(lambda: collections.defaultdict(list))
     for r in rows:
         if r["dataset"] == ds and r["budget"] == budget and r["arm"] in (a1, a2):
-            per[(r["uid"], r["sample_idx"])][r["arm"]] = r["correct"]
-    x = sum(1 for v in per.values() if v.get(a1) and not v.get(a2))
-    y = sum(1 for v in per.values() if v.get(a2) and not v.get(a1))
+            per[r["uid"]][r["arm"]].append(r["correct"])
+
+    def maj(v: list) -> bool:
+        return bool(v) and sum(v) / len(v) >= 0.5
+
+    x = sum(1 for v in per.values() if maj(v[a1]) and not maj(v[a2]))
+    y = sum(1 for v in per.values() if maj(v[a2]) and not maj(v[a1]))
     n = x + y
     p = sum(comb(n, i) for i in range(min(x, y) + 1)) * 2 / 2**n if n else 1.0
     return x, y, min(p, 1.0)
@@ -48,7 +57,7 @@ def mcnemar(rows: list[dict], ds: str, budget: int, a1: str, a2: str):
 def main(out=sys.stdout):
     rows = load(ROOT / "results" / "main.jsonl")
 
-    print("=== paired McNemar: jspace vs random ===", file=out)
+    print("=== paired McNemar: jspace vs random (per-problem) ===", file=out)
     for ds in ("arith", "gsm8k", "math500", "aime24"):
         for b in BUDGETS:
             x, y, p = mcnemar(rows, ds, b, "jspace", "random")

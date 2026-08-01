@@ -1,4 +1,4 @@
-=== paired McNemar: jspace vs random ===
+=== paired McNemar: jspace vs random (per-problem) ===
   arith budget=0: jspace-only-right=3 random-only-right=2 p=1.0000
   arith budget=256: jspace-only-right=10 random-only-right=5 p=0.3018
   arith budget=512: jspace-only-right=1 random-only-right=0 p=1.0000
@@ -14,11 +14,11 @@
   math500 budget=512: jspace-only-right=17 random-only-right=5 p=0.0169
   math500 budget=1024: jspace-only-right=17 random-only-right=7 p=0.0639
   math500 budget=4096: jspace-only-right=11 random-only-right=9 p=0.8238
-  aime24 budget=0: jspace-only-right=3 random-only-right=0 p=0.2500
+  aime24 budget=0: jspace-only-right=1 random-only-right=0 p=1.0000
   aime24 budget=256: jspace-only-right=0 random-only-right=0 p=1.0000
-  aime24 budget=512: jspace-only-right=2 random-only-right=0 p=0.5000
-  aime24 budget=1024: jspace-only-right=1 random-only-right=0 p=1.0000
-  aime24 budget=4096: jspace-only-right=15 random-only-right=2 p=0.0023
+  aime24 budget=512: jspace-only-right=0 random-only-right=0 p=1.0000
+  aime24 budget=1024: jspace-only-right=0 random-only-right=0 p=1.0000
+  aime24 budget=4096: jspace-only-right=5 random-only-right=0 p=0.0625
 
 === MATH-500 accuracy by level ===
   budget=0 L1: control=0.500 jspace=0.433 random=0.367
